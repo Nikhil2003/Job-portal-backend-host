@@ -6,8 +6,6 @@ import { connection } from "./database/connection.js";
 import { errorMiddleware } from "./middlewares/error.js";
 import fileUpload from "express-fileupload";
 import userRouter from "./routes/userRouter.js";
-
-//importing job router in app.js file to see the changes made in it
 import jobRouter from "./routes/jobRouter.js";
 import applicationRouter from "./routes/applicationRouter.js";
 import companyRouter from "./routes/companyRouter.js";
@@ -43,25 +41,24 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(
   fileUpload({
-    // we are using this to get the file that user will upload like resume and coverletter.
     useTempFiles: true,
-    tempFileDir: "/temp/", //we can check this code syntax on their website
+    tempFileDir: tempDir, // Use the relative path for the temp directory
   })
 );
 
-app.use("/api/v1/user", userRouter); //here we are calling the userRoutes.
-app.use("/api/v1/job", jobRouter); //here we are calling the jobRoutes.
-app.use("/api/v1/company", companyRouter); //here we are calling the companyRouter.
+app.use("/api/v1/user", userRouter); // Calling the userRoutes
+app.use("/api/v1/job", jobRouter); // Calling the jobRoutes
+app.use("/api/v1/company", companyRouter); // Calling the companyRouter
 
 app.use("/api/v1/application", applicationRouter);
 
 app.get('/', (req, res) => {
   res.send('API is running....');
-})
+});
 
 newsLetterCron();
-connection(); //here calling to the database and try to connect with database - mongoose.
+connection(); // Connect to the database using mongoose
 
-app.use(errorMiddleware); //to check the errors of the pages.
+app.use(errorMiddleware); // Handle errors
 
 export default app;
